@@ -1,0 +1,36 @@
+---
+title: "Reservation callbacks"
+description: "Reservation callback formats for HotelRunner and custom integrations."
+---
+
+Use this page to explain how Centra receives reservation callbacks.
+
+## API support
+
+HotelRunner reservation delivery and callback support includes:
+
+- `POST /reservations/push`
+- `GET /v2/apps/reservations`
+- `PUT /v2/apps/reservations`
+- `PUT /v2/apps/reservations/~`
+- `PUT /v2/apps/reservations/fire`
+- `POST /callback/{hotel_id}`
+
+Custom channel support includes:
+
+- `POST /reservations/confirm`
+- `POST /reservations/push/{token}/{hotel_id}`
+
+Internal backend support includes:
+
+- `POST /bridge-api/reservations/callback`
+- `POST /bridge-api/reservations/confirm-delivery`
+- `POST /bridge-api/reservations/failed-callback-log`
+
+## HotelRunner callbacks
+
+Document the expected HotelRunner callback structure, validation rules, and downstream behavior.
+
+## Custom formats
+
+Document how custom partners can send reservation callbacks and what format rules they must follow.

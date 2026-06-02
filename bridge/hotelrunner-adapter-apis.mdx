@@ -1,0 +1,27 @@
+---
+title: "HotelRunner adapter APIs"
+description: "Adapter APIs that support the HotelRunner integration."
+---
+
+Use this page to document the HotelRunner adapter endpoints, authentication, request models, and response expectations.
+
+## API support
+
+HotelRunner-compatible routes include:
+
+- `GET /v2/apps/rooms`
+- `PUT /v2/apps/rooms/~`
+- `PUT /v2/apps/rooms/daily`
+- `GET /v2/apps/reservations`
+- `PUT /v2/apps/reservations`
+- `PUT /v2/apps/reservations/~`
+- `PUT /v2/apps/reservations/fire`
+
+Authentication is handled through HotelRunner-style query parameters such as `hr_id` and `token`.
+
+## Include
+
+- auth model
+- endpoint list
+- supported operations
+- expected errors

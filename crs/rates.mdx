@@ -1,0 +1,35 @@
+---
+title: "Load rates"
+description: "Set or update rates for selling inventory."
+---
+
+Use this page to document how rates are loaded across dates and plans.
+
+## API support
+
+Rates can be managed through dedicated pricing routes or ARI orchestrator routes:
+
+- `GET /pricing/range`
+- `POST /pricing`
+- `POST /pricing/bulk`
+- `DELETE /pricing/{roomTypeId}/{ratePlanId}/{date}`
+- `DELETE /pricing/exclusive/{ratePlanId}/{date}`
+- `POST /ari/bulk-update`
+- `POST /ari/inline-bulk`
+- `POST /ari/bulk-update-advanced`
+- `POST /ari/full-sync`
+
+Permissions commonly involved:
+
+- `pricing.read`
+- `pricing.write`
+- `pricing.delete`
+- `availability.write`
+- `restrictions.write`
+
+## Include
+
+- applicable dates
+- room type and rate plan selection
+- single or bulk updates
+- validation checks before publish

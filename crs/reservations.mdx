@@ -1,0 +1,34 @@
+---
+title: "Create reservation"
+description: "Create reservations inside CRS."
+---
+
+Use this page to document the manual reservation flow.
+
+## API support
+
+Reservation workflows are supported by routes such as:
+
+- `GET /reservations`
+- `GET /reservations/range`
+- `POST /reservations/quote`
+- `POST /reservations/extras/quote`
+- `POST /reservations`
+- `PUT /reservations/{id}`
+- `POST /reservations/{id}/reprice/quote`
+- `POST /reservations/{id}/reprice/extras/quote`
+- `PUT /reservations/{id}/reprice`
+
+Permissions commonly involved:
+
+- `reservations.read`
+- `reservations.write`
+- `reservations.delete`
+
+## Include
+
+- guest details
+- stay details
+- pricing and taxes
+- payment or guarantee details
+- confirmation behavior

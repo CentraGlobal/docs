@@ -1,47 +1,54 @@
 ---
 title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+description: "Get started with Centra product workflows and the APIs that support them."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+Use this guide when you want the fastest path from initial access to product-oriented documentation with API support.
 
 ## Prerequisites
 
-Before you begin, you must have:
+Before you begin, make sure you have:
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
+- access to the correct Centra workspace
+- the product area you want to work on first
+- access to backend and bridge API docs where needed
 
-## Get started
+## Start by product area
+
+Centra docs are organized by product. Each product page should help readers understand both the workflow and the API capabilities behind it.
+
+## Recommended path
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
-
-    ```bash
-    npm install your-package
-    ```
+  <Step title="Choose the product area">
+    Start with **Auth**, **CRS**, **Bridge**, or **Developer** depending on your goal.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
-    ```
+  <Step title="Follow the workflow guide">
+    Read the page for the task you want to complete, such as creating room types, loading availability, or setting up bridge credentials.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
 
-    ```bash
-    your-cli start
-    ```
+  <Step title="Use the linked API support">
+    For every documented workflow, use the linked API capability to automate, validate, or integrate the same process.
+  </Step>
+
+  <Step title="Open the reference docs when needed">
+    Use backend `/docs` and bridge `/docs` to inspect the generated OpenAPI documentation for exact request and response details.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Product entry points
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+- [Auth](/auth)
+- [CRS](/crs)
+- [Bridge](/bridge)
+- [Developer](/developer)
+
+## API entry points
+
+- backend API reference is available through `/docs` and `/doc`
+- bridge API reference is available through `/docs` and `/doc`
+
+<Info>
+  This docs site should explain why you use a workflow. The generated API docs should provide the exact contract for implementation and testing.
+</Info>

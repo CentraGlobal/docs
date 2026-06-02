@@ -1,0 +1,31 @@
+---
+title: "Create rate plans"
+description: "Build rate plans for pricing and selling inventory."
+---
+
+Use this page to document how rate plans are configured.
+
+## API support
+
+Rate plan support is split across standard and composition flows:
+
+- `GET /rateplans`
+- `GET /rateplans/{id}`
+- `DELETE /rateplans/{id}`
+- `POST /rateplans/compose`
+- `PUT /rateplans/{id}/compose`
+- `GET /rateplans/{id}/compose`
+
+Permissions:
+
+- `rateplans.read`
+- `rateplans.write`
+- `rateplans.delete`
+
+## Include
+
+- base rules
+- linked room types
+- linked cancellation policies
+- pricing model
+- restrictions and sell rules

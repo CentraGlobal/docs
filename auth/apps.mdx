@@ -1,0 +1,146 @@
+---
+title: "Apps"
+description: "Create apps and authenticate with app credentials through the backend API."
+---
+
+Use apps when you need machine-to-machine access or integration-specific credentials.
+
+## API support
+
+App management and login are exposed through backend routes:
+
+- `POST /apps/login`
+- `GET /apps`
+- `GET /apps/{id}`
+- `POST /apps`
+- `PATCH /apps/{id}`
+- `POST /apps/{id}/rotate-secret`
+- `DELETE /apps/{id}`
+
+Permissions used by these routes include:
+
+- `apps.read`
+- `apps.write`
+- `apps.delete`
+
+## How app auth works
+
+Apps are principals in the same auth model as users.
+
+That means apps can:
+
+- belong to organizations and hotels
+- receive roles and permissions
+- authenticate with client credentials
+- create records with principal-aware audit fields
+
+Important token and auth notes:
+
+- app tokens are generated and verified separately from user tokens
+- app tokens are expected to stay short-lived
+- client secrets are stored hashed
+- app membership uses the app principal ID, not a user ID
+
+## Create an app
+
+Use `POST /apps` to create a new app.
+
+This route requires:
+
+- bearer authentication
+- `x-organization-id`
+- `apps.write` permission
+
+Request body:
+
+```json
+{
+  "name": "HotelRunner Sync",
+  "description": "Integration app for bridge sync",
+  "isActive": true,
+  "orgId": "ORG-2321",
+  "hotelIds": ["HT-2321"],
+  "roleId": "ROLE-INTEGRATION"
+}
+```
+
+Important response behavior:
+
+- the app creation response includes the plaintext `clientSecret`
+- that plaintext secret is only returned at creation time
+- store it securely before leaving the page or finishing the workflow
+
+## List and inspect apps
+
+Use these routes when you need to manage or review existing apps:
+
+- `GET /apps`
+- `GET /apps/{id}`
+
+These responses do not expose the plaintext client secret.
+
+## Update an app
+
+Use `PATCH /apps/{id}` to update fields such as:
+
+- `name`
+- `description`
+- `isActive`
+- `hotelIds`
+- `roleId`
+
+## Rotate the client secret
+
+Use `POST /apps/{id}/rotate-secret` when a secret is exposed, lost, or due for rotation.
+
+This route returns a new plaintext `clientSecret`, and that value should be stored securely immediately.
+
+## Delete or deactivate an app
+
+Use `DELETE /apps/{id}`.
+
+- default behavior deactivates the app
+- `?hard=true` permanently deletes it
+
+## Login with an app
+
+Use `POST /apps/login` to exchange client credentials for an app access token.
+
+Request body:
+
+```json
+{
+  "clientId": "ORG-123_xxx",
+  "clientSecret": "secret-from-creation"
+}
+```
+
+Response shape includes:
+
+- `accessToken`
+- `tokenType`
+- `expiresIn`
+- `app.id`
+- `app.clientId`
+- `app.name`
+- `app.orgId`
+
+## Headers and scoping after app login
+
+After app login, downstream routes still rely on scoped headers where required, for example:
+
+- `Authorization: Bearer <token>`
+- `x-organization-id` for org-scoped routes
+- `x-hotel-id` for hotel-scoped routes
+
+## Recommended documentation focus
+
+- how to create an app safely
+- where to store the returned secret
+- how roles and hotel/org scope affect app access
+- how to rotate and revoke credentials
+- how to authenticate with `POST /apps/login`
+
+<Warning>
+  Never expose production credentials in documentation examples.
+</Warning>

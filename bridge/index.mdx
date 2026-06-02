@@ -1,0 +1,28 @@
+---
+title: "Bridge"
+description: "Bridge callbacks, adapter APIs, and integration-facing flows with direct API support."
+---
+
+The Bridge section covers how Centra receives reservations and exposes adapter APIs.
+
+## API support
+
+Bridge capabilities are split between:
+
+- backend bridge management routes such as `/bridge-credentials`, `/bridge-integrations`, and `/bridge-api/*`
+- bridge service endpoints used for partner-facing connectivity
+- generated Swagger docs under `/docs` and OpenAPI JSON under `/doc`
+
+## Topics
+
+<Card title="Reservation callbacks" icon="arrow-down-to-line" href="/bridge/reservation-callbacks">
+  Document HotelRunner callback payloads and custom callback formats.
+</Card>
+
+<Card title="HotelRunner adapter APIs" icon="plug" href="/bridge/hotelrunner-adapter-apis">
+  Document the adapter APIs used for the HotelRunner flow.
+</Card>
+
+<Card title="Custom adapter APIs" icon="workflow" href="/bridge/custom-adapter-apis">
+  Document custom adapter APIs for partner-specific integrations.
+</Card>

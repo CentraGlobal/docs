@@ -1,0 +1,23 @@
+---
+title: "Custom adapter APIs"
+description: "Adapter APIs for custom bridge integrations."
+---
+
+Use this page to document custom adapter patterns for non-HotelRunner integrations.
+
+## API support
+
+Custom channel routes include:
+
+- `POST /roominventory/update`
+- `POST /reservations/confirm`
+- `POST /reservations/push/{token}/{hotel_id}`
+
+These routes support XML-first integrations and authenticated callback flows for custom or LTA-style partners.
+
+## Include
+
+- authentication requirements
+- endpoint structure
+- payload formats
+- compatibility expectations

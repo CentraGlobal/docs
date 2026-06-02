@@ -1,0 +1,33 @@
+---
+title: "Integrations"
+description: "Integration guidance for HotelRunner and custom partners."
+---
+
+Use this page as the developer entry point for supported bridge integrations.
+
+## API support
+
+Integration management routes include:
+
+- `GET /bridge-integrations/pms-presets`
+- `GET /bridge-integrations`
+- `GET /bridge-integrations/{id}`
+- `POST /bridge-integrations`
+- `PUT /bridge-integrations/{id}`
+- `POST /bridge-integrations/{id}/import-reservations`
+- `DELETE /bridge-integrations/{id}`
+- `GET /bridge-api/integrations` for bridge-side lookup
+
+Permissions:
+
+- `integrations.read`
+- `integrations.write`
+- `integrations.delete`
+
+## HotelRunner
+
+Document the standard integration path, adapter expectations, and callback handling.
+
+## Custom
+
+Document how to approach non-standard integrations, including custom payloads and adapter design.
