@@ -3,7 +3,7 @@ title: "Create reservation"
 description: "Create reservations inside CRS."
 ---
 
-Use this page to document the manual reservation flow.
+Use the CRS reservation flow when an operator needs to quote, price, and confirm a reservation manually.
 
 ## API support
 
@@ -25,10 +25,206 @@ Permissions commonly involved:
 - `reservations.write`
 - `reservations.delete`
 
-## Include
+## Recommended reservation flow
 
 - guest details
 - stay details
 - pricing and taxes
 - payment or guarantee details
 - confirmation behavior
+
+## Step 1: quote the stay
+
+Use `POST /reservations/quote` to get the valid room and rate combinations for the requested stay.
+
+Example request:
+
+```json
+{
+  "checkIn": "2026-07-10",
+  "checkOut": "2026-07-12",
+  "roomTypeId": "rt_123",
+  "roomsCount": 1,
+  "adults": 2,
+  "children": 1,
+  "childAges": [8],
+  "babies": 0,
+  "promoCode": "SUMMER26"
+}
+```
+
+The quote input supports:
+
+- `checkIn`
+- `checkOut`
+- `roomTypeId`
+- `roomsCount`
+- `adults`
+- `children`
+- `babies`
+- `childAges`
+- optional `promoCode`
+- optional `contractId`
+- optional `groupBlockId`
+
+The quote response can return:
+
+- stay nights
+- currency
+- room and rate combinations
+- nightly breakdown
+- applied promotions
+- promo code result
+- unavailable rate plans
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Quote generated successfully",
+  "data": {
+    "stayNights": 2,
+    "currency": "MAD",
+    "promoCode": {
+      "code": "SUMMER26",
+      "status": "applied"
+    },
+    "combinations": [
+      {
+        "roomTypeId": "rt_123",
+        "roomTypeName": "Deluxe Double",
+        "ratePlanId": "rp_123",
+        "ratePlanName": "Flexible Rate",
+        "availableUnits": 5,
+        "pricing": {
+          "baseAmount": "2400",
+          "taxTotal": "100",
+          "promotionTotal": "0",
+          "promoCodeTotal": "150",
+          "totalAmount": "2350"
+        },
+        "nightlyBreakdown": [
+          {
+            "date": "2026-07-10",
+            "baseAmount": "1200",
+            "taxTotal": "50",
+            "totalAmount": "1250"
+          }
+        ],
+        "appliedPromotions": [],
+        "appliedPromoCode": {
+          "id": null,
+          "name": "SUMMER26",
+          "type": "promo_code",
+          "amount": "150",
+          "code": "SUMMER26"
+        }
+      }
+    ],
+    "exclusiveRatePlans": [],
+    "unavailableRatePlans": []
+  }
+}
+```
+
+## Step 2: quote extras if needed
+
+Use `POST /reservations/extras/quote` to retrieve extras that apply to the selected room and rate context.
+
+## Step 3: create the reservation
+
+Use `POST /reservations` once the guest, stay, and pricing details are ready.
+
+Example request:
+
+```json
+{
+  "rooms": [
+    {
+      "roomTypeId": "rt_123",
+      "ratePlanId": "rp_123",
+      "quantity": 1
+    }
+  ],
+  "profiles": [
+    {
+      "profileId": "pr_123",
+      "isPrimary": true
+    }
+  ],
+  "guestName": "Jane Doe",
+  "source": "direct",
+  "channel": "manual",
+  "checkIn": "2026-07-10",
+  "checkOut": "2026-07-12",
+  "roomsCount": 1,
+  "adults": 2,
+  "children": 1,
+  "babies": 0,
+  "childAges": [8],
+  "currency": "MAD",
+  "totalAmount": "2350",
+  "taxAmount": "100",
+  "promoCode": "SUMMER26",
+  "notes": "Late arrival"
+}
+```
+
+The reservation payload supports:
+
+- one room selection or multiple room lines
+- linked profiles
+- guest display name
+- source and channel
+- check-in and check-out dates
+- occupancy counts
+- totals, tax amount, and optional commission amount
+- promo code, extras, notes, and references
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Reservation created successfully",
+  "data": {
+    "id": "res_123",
+    "orgId": "ORG-2321",
+    "hotelId": "HT-2321",
+    "guestName": "Jane Doe",
+    "source": "direct",
+    "channel": "manual",
+    "checkIn": "2026-07-10",
+    "checkOut": "2026-07-12",
+    "status": "pending",
+    "currency": "MAD",
+    "totalAmount": "2350",
+    "taxAmount": "100",
+    "nights": 2,
+    "createdAt": "2026-06-02T10:00:00.000Z",
+    "updatedAt": "2026-06-02T10:00:00.000Z",
+    "createdBy": "usr_123"
+  }
+}
+```
+
+## Step 4: adjust if needed
+
+Use these routes when the reservation changes before or after creation:
+
+- `PUT /reservations/{id}`
+- `POST /reservations/{id}/reprice/quote`
+- `POST /reservations/{id}/reprice/extras/quote`
+- `PUT /reservations/{id}/reprice`
+
+## Important validation notes
+
+- every reservation must include either `rooms` or a legacy `roomTypeId + ratePlanId` pair
+- `checkOut` must be after `checkIn`
+- totals are provided explicitly in the reservation payload
+- status values are controlled to the supported reservation state set
+
+<Tip>
+  Start with quote endpoints before create endpoints whenever you want backend-authoritative pricing and availability validation.
+</Tip>

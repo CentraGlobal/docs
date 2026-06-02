@@ -3,7 +3,9 @@ title: "Create room types"
 description: "Define the room types that your property sells."
 ---
 
-Use this page to document how to create room types in CRS.
+Use room types to define the sellable accommodation categories in your property.
+
+Every rate plan, availability update, and reservation flow depends on room types being configured correctly first.
 
 ## API support
 
@@ -21,9 +23,94 @@ Permissions:
 - `roomtypes.write`
 - `roomtypes.delete`
 
-## Include
+## What you define in a room type
+
+- room type name
+- base inventory
+- capacity
+- adult, child, and baby limits
+- optional room code
+- optional linked rate plans
+
+## Workflow
+
+<Steps>
+  <Step title="Name the room type">
+    Use a clear commercial name that your team can recognize quickly.
+  </Step>
+
+  <Step title="Set inventory and occupancy">
+    Define the base inventory and the occupancy rules that apply to the room type.
+  </Step>
+
+  <Step title="Add internal reference fields">
+    If your team uses internal codes, add a room code that stays consistent across operations and integrations.
+  </Step>
+
+  <Step title="Link rate plans if needed">
+    Attach rate plans when the room type should immediately participate in pricing and selling workflows.
+  </Step>
+</Steps>
+
+## Validation notes
 
 - required room type fields
 - occupancy and capacity rules
 - naming conventions
 - status or activation behavior
+
+## Recommended API use
+
+- use `POST /roomtypes` when creating a room type from setup tooling or integrations
+- use `GET /roomtypes` and `GET /roomtypes/{id}` to validate what is already configured
+- use `PUT /roomtypes/{id}` when occupancy or inventory metadata changes
+
+## Example create request
+
+`POST /roomtypes`
+
+```json
+{
+  "name": "Deluxe Double",
+  "baseInventory": 12,
+  "capacity": 3,
+  "maxAdults": 2,
+  "maxChildren": 1,
+  "maxBabies": 1,
+  "roomCode": "DLX-DBL",
+  "ratePlanIds": ["rp_standard", "rp_flexible"]
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Room type created successfully",
+  "data": {
+    "id": "rt_123",
+    "hotelId": "HT-2321",
+    "orgId": "ORG-2321",
+    "name": "Deluxe Double",
+    "baseInventory": 12,
+    "capacity": 3,
+    "maxAdults": 2,
+    "maxChildren": 1,
+    "maxBabies": 1,
+    "roomCode": "DLX-DBL",
+    "metadata": {},
+    "ratePlanIds": ["rp_standard", "rp_flexible"],
+    "roomKind": "standard",
+    "isPostingMaster": false,
+    "createdBy": "usr_123",
+    "createdByPrincipalType": "user",
+    "createdAt": "2026-06-02T10:00:00.000Z",
+    "updatedAt": "2026-06-02T10:00:00.000Z"
+  }
+}
+```
+
+<Tip>
+  Create room types before rate plans so pricing and inventory updates have the correct room context.
+</Tip>

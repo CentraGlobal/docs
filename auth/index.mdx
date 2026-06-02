@@ -33,6 +33,20 @@ Use **Login** when a human user needs an authenticated session. Use **Apps** whe
 - understand which headers or context are required after authentication
 - avoid exposing secrets or long-lived credentials in unsafe places
 
+## Response format used in examples
+
+Centra success responses follow this general pattern:
+
+```json
+{
+  "success": true,
+  "message": "Request completed successfully",
+  "data": {}
+}
+```
+
+When a list endpoint is paginated, the response can also include `meta`.
+
 ## Topics
 
 <Card title="Login" icon="log-in" href="/auth/login">

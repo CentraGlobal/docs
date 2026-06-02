@@ -64,6 +64,31 @@ Request body:
 }
 ```
 
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "App created successfully",
+  "data": {
+    "id": "app_123",
+    "orgId": "ORG-2321",
+    "name": "HotelRunner Sync",
+    "description": "Integration app for bridge sync",
+    "clientId": "ORG-2321_abc123",
+    "clientSecret": "generated-plaintext-secret",
+    "isActive": true,
+    "lastRotatedAt": null,
+    "createdBy": "usr_123",
+    "createdByPrincipalType": "user",
+    "createdAt": "2026-06-02T10:00:00.000Z",
+    "updatedAt": "2026-06-02T10:00:00.000Z",
+    "hotelIds": ["HT-2321"],
+    "roleId": "ROLE-INTEGRATION"
+  }
+}
+```
+
 Important response behavior:
 
 - the app creation response includes the plaintext `clientSecret`
@@ -78,6 +103,38 @@ Use these routes when you need to manage or review existing apps:
 - `GET /apps/{id}`
 
 These responses do not expose the plaintext client secret.
+
+Example list response:
+
+```json
+{
+  "success": true,
+  "message": "Apps retrieved successfully",
+  "data": [
+    {
+      "id": "app_123",
+      "orgId": "ORG-2321",
+      "name": "HotelRunner Sync",
+      "description": "Integration app for bridge sync",
+      "clientId": "ORG-2321_abc123",
+      "isActive": true,
+      "lastRotatedAt": null,
+      "createdBy": "usr_123",
+      "createdByPrincipalType": "user",
+      "createdAt": "2026-06-02T10:00:00.000Z",
+      "updatedAt": "2026-06-02T10:00:00.000Z",
+      "hotelIds": ["HT-2321"],
+      "roleId": "ROLE-INTEGRATION"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "limit": 10,
+    "total": 1,
+    "total_pages": 1
+  }
+}
+```
 
 ## Update an app
 
@@ -95,12 +152,36 @@ Use `POST /apps/{id}/rotate-secret` when a secret is exposed, lost, or due for r
 
 This route returns a new plaintext `clientSecret`, and that value should be stored securely immediately.
 
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Client secret rotated successfully",
+  "data": {
+    "clientId": "ORG-2321_abc123",
+    "clientSecret": "new-generated-secret",
+    "lastRotatedAt": "2026-06-02T11:00:00.000Z"
+  }
+}
+```
+
 ## Delete or deactivate an app
 
 Use `DELETE /apps/{id}`.
 
 - default behavior deactivates the app
 - `?hard=true` permanently deletes it
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "App deactivated successfully",
+  "data": null
+}
+```
 
 ## Login with an app
 
@@ -115,15 +196,25 @@ Request body:
 }
 ```
 
-Response shape includes:
+Example response:
 
-- `accessToken`
-- `tokenType`
-- `expiresIn`
-- `app.id`
-- `app.clientId`
-- `app.name`
-- `app.orgId`
+```json
+{
+  "success": true,
+  "message": "App login successful",
+  "data": {
+    "accessToken": "eyJhbGciOi...",
+    "tokenType": "Bearer",
+    "expiresIn": 300,
+    "app": {
+      "id": "app_123",
+      "clientId": "ORG-123_xxx",
+      "name": "HotelRunner Sync",
+      "orgId": "ORG-2321"
+    }
+  }
+}
+```
 
 ## Headers and scoping after app login
 

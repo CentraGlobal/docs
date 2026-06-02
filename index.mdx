@@ -3,7 +3,13 @@ title: "Centra documentation"
 description: "Explore product workflows with the API support behind each part of the platform."
 ---
 
-Centra documentation is organized by product area. Each section explains the workflow, the operational context, and the API support available behind it.
+Centra documentation helps your team complete product workflows and use the matching APIs with confidence.
+
+Use these docs when you want to:
+
+- follow a product workflow step by step
+- understand which API supports that workflow
+- copy request and response examples into your own tools and integrations
 
 <div
   style={{
@@ -15,29 +21,47 @@ Centra documentation is organized by product area. Each section explains the wor
     fontWeight: 500,
   }}
 >
-  Start with [Quickstart](/quickstart) to understand how product workflows connect to the backend API and bridge API.
+  Start with [Quickstart](/quickstart) if you want the fastest route from first access to working product and API examples.
 </div>
+
+## Start here
+
+<Card title="Quickstart" icon="rocket" href="/quickstart">
+  Follow the recommended onboarding path across Auth, CRS, Bridge, and Developer.
+</Card>
+<Card title="API-backed guides" icon="files" href="/auth">
+  Open a product section when you want workflows, endpoint coverage, and request/response examples together.
+</Card>
 
 ## Product areas
 
 <Card title="Auth" icon="shield-check" href="/auth">
-  Learn user login, app login, and the authentication endpoints behind them.
+  Learn user login, app login, session handling, and authentication examples.
 </Card>
 <Card title="CRS" icon="building-2" href="/crs">
-  Follow CRS setup tasks and see which APIs support inventory, pricing, and reservations.
+  Follow setup tasks for room types, policies, taxes, rates, availability, and reservations.
 </Card>
 <Card title="Bridge" icon="plug" href="/bridge">
-  Explore reservation callbacks, HotelRunner-compatible APIs, and custom channel formats.
+  Explore callbacks, HotelRunner-compatible APIs, and custom partner formats.
 </Card>
 <Card title="Developer" icon="code-2" href="/developer">
-  Set up bridge credentials, integrations, and API discovery paths for technical teams.
+  Set up credentials, integrations, and API discovery for technical teams.
 </Card>
+
+## How to use this docs site
+
+Choose the page type that matches your goal:
+
+- **Product guides** explain the workflow in business terms
+- **API support** sections show the endpoints behind the workflow
+- **Examples** give you request and response payloads you can adapt quickly
 
 ## What this docs site covers
 
 - product workflows by area
 - API support for backend and bridge use cases
 - integration setup and bridge credentials
+- request and response examples for the main flows
 - operator and developer guidance side by side
 - coming-soon sections for PMS, OBE, and CRM
 
@@ -52,5 +76,6 @@ Centra documentation is organized by product area. Each section explains the wor
 Use this space to keep guidance practical, current, and easy to scan.
 
 - show the workflow first, then the API support behind it
+- prefer examples that customers can adapt immediately
 - document prerequisites, permissions, and expected outcomes clearly
 - separate operator tasks from integration implementation guidance

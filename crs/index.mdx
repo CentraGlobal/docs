@@ -3,7 +3,9 @@ title: "CRS"
 description: "Core CRS workflows for inventory, pricing, reservations, and the backend APIs behind them."
 ---
 
-The CRS section covers the main setup and operational tasks for inventory and reservation management.
+The CRS section covers the day-to-day setup workflows that define what you sell, how you price it, and how reservations are created.
+
+Use these pages when you are preparing a property for sale, updating inventory, or handling a reservation from the CRS side.
 
 ## API support
 
@@ -18,12 +20,44 @@ These workflows map to backend API groups such as:
 - `/pricing`
 - `/reservations`
 
+Use the API support when you want to automate configuration, validate setup changes, or integrate the same CRS workflow into another system.
+
+## Recommended setup order
+
+1. Create room types
+2. Create cancellation policies
+3. Create taxes
+4. Create rate plans
+5. Load availability
+6. Load rates
+7. Create reservations
+
 ## Topics
 
-- room types
-- cancellation policies
-- taxes
-- rate plans
-- availability
-- rates
-- reservations
+<Card title="Create room types" icon="bed-double" href="/crs/room-types">
+  Define the room categories, inventory, and occupancy rules you want to sell.
+</Card>
+
+<Card title="Create cancellation policies" icon="shield-x" href="/crs/cancellation-policies">
+  Configure refundable, non-refundable, and prepayment policy behavior.
+</Card>
+
+<Card title="Create taxes" icon="receipt" href="/crs/taxes">
+  Define the taxes that affect quoted and confirmed pricing.
+</Card>
+
+<Card title="Create rate plans" icon="badge-dollar-sign" href="/crs/rate-plans">
+  Build the plans that package price, cancellation, board, and inventory behavior.
+</Card>
+
+<Card title="Load availability" icon="calendar-range" href="/crs/availability">
+  Open, restrict, or stop-sell inventory across a date range.
+</Card>
+
+<Card title="Load rates" icon="chart-line" href="/crs/rates">
+  Apply pricing updates to room and rate combinations.
+</Card>
+
+<Card title="Create reservation" icon="clipboard-check" href="/crs/reservations">
+  Quote, price, and confirm reservations inside CRS.
+</Card>

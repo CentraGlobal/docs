@@ -3,7 +3,7 @@ title: "Quickstart"
 description: "Get started with Centra product workflows and the APIs that support them."
 ---
 
-Use this guide when you want the fastest path from initial access to product-oriented documentation with API support.
+Use this guide when you want the shortest path from first access to useful product and API documentation.
 
 ## Prerequisites
 
@@ -11,38 +11,66 @@ Before you begin, make sure you have:
 
 - access to the correct Centra workspace
 - the product area you want to work on first
-- access to backend and bridge API docs where needed
+- access to API reference endpoints where needed
 
-## Start by product area
+## What you will get from this guide
 
-Centra docs are organized by product. Each product page should help readers understand both the workflow and the API capabilities behind it.
+By the end of this quickstart, you should know:
+
+- where to start in the docs
+- when to use a workflow page vs an API reference
+- which product area to open next
 
 ## Recommended path
 
 <Steps>
-  <Step title="Choose the product area">
-    Start with **Auth**, **CRS**, **Bridge**, or **Developer** depending on your goal.
+  <Step title="Start with Auth">
+    Open **Auth** first if you need user login, app login, session handling, or credentials before doing anything else.
   </Step>
 
-  <Step title="Follow the workflow guide">
-    Read the page for the task you want to complete, such as creating room types, loading availability, or setting up bridge credentials.
+  <Step title="Move to CRS for core setup">
+    Open **CRS** when you are preparing inventory, pricing, policies, taxes, or reservations.
   </Step>
 
-  <Step title="Use the linked API support">
-    For every documented workflow, use the linked API capability to automate, validate, or integrate the same process.
+  <Step title="Use Bridge for partner-facing flows">
+    Open **Bridge** when you are handling callbacks, HotelRunner-style APIs, or custom partner formats.
   </Step>
 
-  <Step title="Open the reference docs when needed">
-    Use backend `/docs` and bridge `/docs` to inspect the generated OpenAPI documentation for exact request and response details.
+  <Step title="Use Developer for implementation details">
+    Open **Developer** when you need credentials, integration setup, and API usage examples for technical teams.
+  </Step>
+
+  <Step title="Switch to API reference when you need exact contracts">
+    Use the generated API docs when you need the full request and response contract beyond the examples in these guides.
   </Step>
 </Steps>
 
 ## Product entry points
 
-- [Auth](/auth)
-- [CRS](/crs)
-- [Bridge](/bridge)
-- [Developer](/developer)
+<Card title="Auth" icon="shield-check" href="/auth">
+  Start here for login, app credentials, and session examples.
+</Card>
+<Card title="CRS" icon="building-2" href="/crs">
+  Continue here for room, pricing, inventory, and reservation workflows.
+</Card>
+<Card title="Bridge" icon="plug" href="/bridge">
+  Use this area for callback handling and partner-facing adapter APIs.
+</Card>
+<Card title="Developer" icon="code-2" href="/developer">
+  Use this area for credentials, integrations, and technical onboarding.
+</Card>
+
+## When to use the workflow guides
+
+- when you want business context
+- when you want a recommended order of operations
+- when you want customer-friendly examples before reading raw API schemas
+
+## When to use the API reference
+
+- when you need the full contract for implementation
+- when you need to inspect optional fields and exact response types
+- when you are validating a request or building an integration
 
 ## API entry points
 
@@ -50,5 +78,5 @@ Centra docs are organized by product. Each product page should help readers unde
 - bridge API reference is available through `/docs` and `/doc`
 
 <Info>
-  This docs site should explain why you use a workflow. The generated API docs should provide the exact contract for implementation and testing.
+  Use the workflow pages first, then switch to the API reference when you need exact field-level detail.
 </Info>

@@ -21,10 +21,42 @@ The backend auth module exposes these routes under `/auth`:
 
 `POST /auth/login`
 
+Example request:
+
 ```json
 {
   "username": "user@example.com",
   "password": "your-password"
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "tokens": {
+      "access_token": "eyJhbGciOi...",
+      "refresh_token": "eyJhbGciOi...",
+      "expires_in": 300,
+      "refresh_expires_in": 1800,
+      "token_type": "Bearer"
+    },
+    "user": {
+      "sub": "usr_123",
+      "email": "user@example.com",
+      "email_verified": true,
+      "preferred_username": "user@example.com",
+      "name": "Jane Doe",
+      "given_name": "Jane",
+      "family_name": "Doe"
+    },
+    "organizations": [],
+    "hotels": [],
+    "invites": []
+  }
 }
 ```
 
@@ -49,6 +81,39 @@ This makes login useful for both authentication and initial workspace bootstrapp
 
 Use `GET /auth/me` after login when you want to confirm the active session and inspect the authenticated user's expanded context.
 
+Example request headers:
+
+```http
+Authorization: Bearer eyJhbGciOi...
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "User info retrieved successfully",
+  "data": {
+    "tokenPayload": {
+      "sub": "usr_123",
+      "email": "user@example.com"
+    },
+    "user": {
+      "sub": "usr_123",
+      "email": "user@example.com",
+      "email_verified": true,
+      "preferred_username": "user@example.com",
+      "name": "Jane Doe",
+      "given_name": "Jane",
+      "family_name": "Doe"
+    },
+    "organizations": [],
+    "hotels": [],
+    "invites": []
+  }
+}
+```
+
 This route requires a bearer token and returns:
 
 - token payload
@@ -61,9 +126,36 @@ This route requires a bearer token and returns:
 
 Use `POST /auth/refresh` with a refresh token when the access token expires.
 
+Example request:
+
 ```json
 {
   "refreshToken": "your-refresh-token"
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Session refreshed successfully",
+  "data": {
+    "tokens": {
+      "access_token": "eyJhbGciOi...",
+      "refresh_token": "eyJhbGciOi...",
+      "expires_in": 300,
+      "refresh_expires_in": 1800,
+      "token_type": "Bearer"
+    },
+    "user": {
+      "sub": "usr_123",
+      "email": "user@example.com"
+    },
+    "organizations": [],
+    "hotels": [],
+    "invites": []
+  }
 }
 ```
 
@@ -73,9 +165,21 @@ The refresh flow returns a new token set and a rebuilt session.
 
 Use `POST /auth/logout` with a refresh token.
 
+Example request:
+
 ```json
 {
   "refreshToken": "your-refresh-token"
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Logged out successfully",
+  "data": null
 }
 ```
 
@@ -94,6 +198,16 @@ Forgot password request:
 }
 ```
 
+Forgot password response:
+
+```json
+{
+  "success": true,
+  "message": "If an account exists for this email, a reset link has been sent.",
+  "data": null
+}
+```
+
 Reset password request:
 
 ```json
@@ -101,6 +215,16 @@ Reset password request:
   "token": "reset-token",
   "newPassword": "new-password",
   "confirmPassword": "new-password"
+}
+```
+
+Reset password response:
+
+```json
+{
+  "success": true,
+  "message": "Password reset successful",
+  "data": null
 }
 ```
 
@@ -112,6 +236,8 @@ User signup is also exposed through auth:
 
 `POST /auth/signup`
 
+Example request:
+
 ```json
 {
   "username": "new-user",
@@ -120,6 +246,31 @@ User signup is also exposed through auth:
   "firstName": "New",
   "lastName": "User",
   "enabled": true
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "User created successfully",
+  "data": {
+    "tokens": {
+      "access_token": "eyJhbGciOi...",
+      "refresh_token": "eyJhbGciOi...",
+      "expires_in": 300,
+      "refresh_expires_in": 1800,
+      "token_type": "Bearer"
+    },
+    "user": {
+      "sub": "usr_456",
+      "email": "new-user@example.com"
+    },
+    "organizations": [],
+    "hotels": [],
+    "invites": []
+  }
 }
 ```
 

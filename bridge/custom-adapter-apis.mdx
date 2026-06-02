@@ -15,6 +15,84 @@ Custom channel routes include:
 
 These routes support XML-first integrations and authenticated callback flows for custom or LTA-style partners.
 
+## Example: inventory update
+
+`POST /roominventory/update?hr_id=HT-2321&token=bridge-token`
+
+Example request:
+
+```xml
+<?xml version="1.0"?>
+<inventory>
+  <hotel_id>HT-2321</hotel_id>
+  <room_code>DLX-DBL</room_code>
+  <date>2026-07-10</date>
+  <availability>10</availability>
+  <price>1450</price>
+</inventory>
+```
+
+Example response:
+
+```xml
+<?xml version="1.0"?>
+<response>
+  <status>0</status>
+  <message>success</message>
+</response>
+```
+
+## Example: delivery confirmation
+
+`POST /reservations/confirm?hr_id=HT-2321&token=bridge-token`
+
+Example request:
+
+```xml
+<?xml version="1.0"?>
+<confirmation>
+  <message_uid>bda9c306bd790e022afc107a8a816966</message_uid>
+  <pms_number>PMS-8899</pms_number>
+</confirmation>
+```
+
+Example response:
+
+```xml
+<?xml version="1.0"?>
+<response>
+  <status>0</status>
+  <message>success</message>
+</response>
+```
+
+## Example: reservation push callback
+
+`POST /reservations/push/{token}/{hotel_id}`
+
+Example request:
+
+```xml
+<?xml version="1.0"?>
+<reservation>
+  <code>CUSTOM-7788</code>
+  <guest_name>Jane Doe</guest_name>
+  <arrival_date>2026-07-10</arrival_date>
+  <departure_date>2026-07-12</departure_date>
+  <total_cost>2350.00</total_cost>
+</reservation>
+```
+
+Example response:
+
+```xml
+<?xml version="1.0"?>
+<response>
+  <status>0</status>
+  <message>success</message>
+</response>
+```
+
 ## Include
 
 - authentication requirements

@@ -29,8 +29,79 @@ Internal backend support includes:
 
 ## HotelRunner callbacks
 
-Document the expected HotelRunner callback structure, validation rules, and downstream behavior.
+HotelRunner callbacks are typically sent to `POST /callback/{hotel_id}` as form data with the reservation payload in the `data` field.
+
+Example request:
+
+```http
+POST /callback/HT-2321?channel=hotelrunner
+Content-Type: application/x-www-form-urlencoded
+
+data={"reason":"confirm","hr_number":"R675877300","state":"confirmed","guest":"Sami Rodus","currency":"MAD","checkin_date":"2025-12-17","checkout_date":"2025-12-23","total":1200.0,"message_uid":"dfd8f7c081ad10b295bddd35de3a6336"}
+```
+
+Example success response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+For XML reservation delivery, HotelRunner-compatible partners can also send:
+
+`POST /reservations/push`
+
+Example XML request:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<reservation>
+  <status>Confirm</status>
+  <code>RES-12345</code>
+  <name><![CDATA[John Doe]]></name>
+  <mail>john.doe@example.com</mail>
+  <arrival_date>2024-02-01</arrival_date>
+  <departure_date>2024-02-03</departure_date>
+  <total_cost>300.00</total_cost>
+  <currency>EUR</currency>
+</reservation>
+```
+
+Example XML response:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>0</status>
+  <message>success</message>
+</response>
+```
 
 ## Custom formats
 
-Document how custom partners can send reservation callbacks and what format rules they must follow.
+Custom partners can use `POST /reservations/push/{token}/{hotel_id}` when the integration relies on token-in-path authentication.
+
+Example request:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<reservation>
+  <code>CUSTOM-7788</code>
+  <name><![CDATA[Jane Doe]]></name>
+  <arrival_date>2026-07-10</arrival_date>
+  <departure_date>2026-07-12</departure_date>
+  <total_cost>2350.00</total_cost>
+  <currency>MAD</currency>
+</reservation>
+```
+
+Example response:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>0</status>
+  <message>success</message>
+</response>
+```

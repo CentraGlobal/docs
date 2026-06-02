@@ -24,10 +24,207 @@ Permissions:
 - `integrations.write`
 - `integrations.delete`
 
+## Example: list presets
+
+`GET /bridge-integrations/pms-presets`
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Supported PMS presets retrieved successfully",
+  "data": {
+    "presets": [
+      {
+        "id": "hotelrunner",
+        "name": "HotelRunner",
+        "description": "Preset callback and adapter rules for HotelRunner"
+      },
+      {
+        "id": "custom",
+        "name": "Custom",
+        "description": "Manual callback setup for custom integrations"
+      }
+    ]
+  }
+}
+```
+
 ## HotelRunner
 
-Document the standard integration path, adapter expectations, and callback handling.
+Use HotelRunner when the integration follows the standard HotelRunner-compatible bridge flow.
+
+Example create request:
+
+`POST /bridge-integrations`
+
+```json
+{
+  "name": "HotelRunner Primary",
+  "integrationType": "channel_manager",
+  "provider": "hotelrunner",
+  "status": "active",
+  "authConfig": {
+    "hr_id": "HT-2321"
+  },
+  "metadata": {
+    "reservation_event_enabled": true,
+    "reservation_event_mode": "internal_and_external",
+    "reservation_payload_format": "centra_v1"
+  }
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Integration created successfully",
+  "data": {
+    "id": "int_123",
+    "hotelId": "HT-2321",
+    "name": "HotelRunner Primary",
+    "integrationType": "channel_manager",
+    "provider": "hotelrunner",
+    "status": "active",
+    "authConfig": {
+      "hr_id": "HT-2321"
+    },
+    "callbackUrl": null,
+    "pmsConfigId": null,
+    "metadata": {
+      "reservation_event_enabled": true,
+      "reservation_event_mode": "internal_and_external",
+      "reservation_payload_format": "centra_v1"
+    },
+    "createdBy": "usr_123",
+    "createdByPrincipalType": "user",
+    "lastSyncAt": null,
+    "createdAt": "2026-06-02T10:00:00.000Z",
+    "updatedAt": "2026-06-02T10:00:00.000Z"
+  }
+}
+```
+
+Example reservation import request:
+
+`POST /bridge-integrations/int_123/import-reservations`
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Reservation import started successfully",
+  "data": {
+    "status": "queued"
+  }
+}
+```
 
 ## Custom
 
-Document how to approach non-standard integrations, including custom payloads and adapter design.
+Use custom integrations when the partner does not follow the HotelRunner contract and needs a manual callback definition.
+
+Example create request:
+
+`POST /bridge-integrations`
+
+```json
+{
+  "name": "Custom PMS Adapter",
+  "integrationType": "custom",
+  "provider": "custom",
+  "status": "active",
+  "authConfig": {
+    "username": "partner-user"
+  },
+  "metadata": {
+    "pms_callback_source": "manual",
+    "pms_preset_id": "custom",
+    "pms_callback_method": "POST",
+    "pms_callback_url": "https://partner.example.com/reservations/callback",
+    "pms_callback_headers": {
+      "Authorization": "Bearer token"
+    },
+    "pms_callback_body": {
+      "reservation_id": "$integration.id",
+      "hotel_id": "$hotel.id"
+    }
+  }
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Integration created successfully",
+  "data": {
+    "id": "int_456",
+    "hotelId": "HT-2321",
+    "name": "Custom PMS Adapter",
+    "integrationType": "custom",
+    "provider": "custom",
+    "status": "active",
+    "authConfig": {
+      "username": "partner-user"
+    },
+    "callbackUrl": null,
+    "pmsConfigId": null,
+    "metadata": {
+      "pms_callback_source": "manual",
+      "pms_preset_id": "custom",
+      "pms_callback_method": "POST",
+      "pms_callback_url": "https://partner.example.com/reservations/callback"
+    },
+    "createdBy": "usr_123",
+    "createdByPrincipalType": "user",
+    "lastSyncAt": null,
+    "createdAt": "2026-06-02T10:00:00.000Z",
+    "updatedAt": "2026-06-02T10:00:00.000Z"
+  }
+}
+```
+
+## Example: bridge-side integration lookup
+
+`GET /bridge-api/integrations?provider=hotelrunner&hr_id=HT-2321`
+
+Example request headers:
+
+```http
+x-hotel-id: HT-2321
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Integrations retrieved successfully",
+  "data": [
+    {
+      "id": "int_123",
+      "hotelId": "HT-2321",
+      "name": "HotelRunner Primary",
+      "integrationType": "channel_manager",
+      "provider": "hotelrunner",
+      "status": "active",
+      "authConfig": {
+        "hr_id": "HT-2321"
+      },
+      "metadata": {
+        "reservation_event_enabled": true
+      },
+      "createdBy": "usr_123",
+      "createdByPrincipalType": "user",
+      "createdAt": "2026-06-02T10:00:00.000Z",
+      "updatedAt": "2026-06-02T10:00:00.000Z"
+    }
+  ]
+}
+```

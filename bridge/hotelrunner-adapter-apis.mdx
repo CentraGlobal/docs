@@ -19,6 +19,90 @@ HotelRunner-compatible routes include:
 
 Authentication is handled through HotelRunner-style query parameters such as `hr_id` and `token`.
 
+## Example: get rooms
+
+`GET /v2/apps/rooms?hr_id=HT-2321&token=bridge-token`
+
+Example response:
+
+```json
+{
+  "rooms": [
+    {
+      "rate_code": "HR:1",
+      "inv_code": "HR:1",
+      "availability_update": true,
+      "restrictions_update": true,
+      "price_update": true,
+      "pricing_type": "guest_based",
+      "name": "Standard Room",
+      "description": "Standard Room Description",
+      "policy": "Standard Room Policy",
+      "room_capacity": 3,
+      "adult_capacity": 2,
+      "is_master": false,
+      "shared": false,
+      "channel_codes": ["bookingcom", "online"],
+      "sales_currency": "EUR",
+      "sell_online": true
+    }
+  ]
+}
+```
+
+## Example: update inventory
+
+`PUT /v2/apps/rooms/~?hr_id=HT-2321&token=bridge-token&inv_code=HR:1&start_date=2026-07-01&end_date=2026-07-05&availability=10&price=1450`
+
+Example response:
+
+```json
+{
+  "status": "ok",
+  "transaction_id": "1735228800000-0"
+}
+```
+
+## Example: retrieve reservations
+
+`GET /v2/apps/reservations?hr_id=HT-2321&token=bridge-token&page=1`
+
+Example response:
+
+```json
+{
+  "reservations": [
+    {
+      "hr_number": "R754208185",
+      "channel": "online",
+      "state": "confirmed",
+      "guest": "John Doe",
+      "total": 245.0,
+      "currency": "EUR",
+      "checkin_date": "2025-01-11",
+      "checkout_date": "2025-01-12",
+      "requires_response": true,
+      "message_uid": "bda9c306bd790e022afc107a8a816966"
+    }
+  ],
+  "count": 1,
+  "current_page": 1,
+  "pages": 1
+}
+```
+
+## Example: confirm delivery
+
+`PUT /v2/apps/reservations?hr_id=HT-2321&token=bridge-token&message_uid=bda9c306bd790e022afc107a8a816966`
+
+Example response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
 ## Include
 
 - auth model
