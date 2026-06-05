@@ -43,6 +43,7 @@
         "pages": [
           "bridge/index",
           "bridge/reservation-callbacks",
+          "bridge/pms-confirm-delivery",
           "bridge/hotelrunner-adapter-apis",
           "bridge/custom-adapter-apis"
         ]
