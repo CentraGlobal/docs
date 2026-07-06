@@ -1,0 +1,58 @@
+---
+title: "Auth"
+description: "Authentication guides for user login, app login, and API-backed access flows."
+---
+
+The Auth section covers how people and systems access Centra.
+
+Use **Login** when a human user needs an authenticated session. Use **Apps** when an integration or internal system needs client credentials.
+
+## API support
+
+- backend auth routes are mounted under `/auth`
+- app credential routes are mounted under `/apps`
+- app login uses `POST /apps/login`
+- user auth includes login, signup, password recovery, refresh, logout, and `GET /auth/me`
+- user session context is resolved from token claims and expanded with organizations, hotels, and invites
+
+## Choose the right auth flow
+
+| Use case | Recommended flow |
+|---|---|
+| User signs in to Centra | `/auth/login` |
+| User checks current session | `GET /auth/me` |
+| User refreshes an expired session | `POST /auth/refresh` |
+| User signs out | `POST /auth/logout` |
+| User forgets password | `POST /auth/forgot-password` then `POST /auth/reset-password` |
+| Integration signs in without a user session | `POST /apps/login` |
+
+## What this section should help readers do
+
+- understand the difference between user auth and app auth
+- know which route to use for each auth task
+- understand which headers or context are required after authentication
+- avoid exposing secrets or long-lived credentials in unsafe places
+
+## Response format used in examples
+
+Centra success responses follow this general pattern:
+
+```json
+{
+  "success": true,
+  "message": "Request completed successfully",
+  "data": {}
+}
+```
+
+When a list endpoint is paginated, the response can also include `meta`.
+
+## Topics
+
+<Card title="Login" icon="log-in" href="/auth/login">
+  Learn how users sign in, refresh sessions, recover passwords, and inspect the active session.
+</Card>
+
+<Card title="Apps" icon="key-round" href="/auth/apps">
+  Create apps, retrieve client credentials, rotate secrets, and log in with client credentials.
+</Card>

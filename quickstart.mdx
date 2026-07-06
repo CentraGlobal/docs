@@ -1,47 +1,82 @@
 ---
 title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+description: "Get started with Centra product workflows and the APIs that support them."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+Use this guide when you want the shortest path from first access to useful product and API documentation.
 
 ## Prerequisites
 
-Before you begin, you must have:
+Before you begin, make sure you have:
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
+- access to the correct Centra workspace
+- the product area you want to work on first
+- access to API reference endpoints where needed
 
-## Get started
+## What you will get from this guide
+
+By the end of this quickstart, you should know:
+
+- where to start in the docs
+- when to use a workflow page vs an API reference
+- which product area to open next
+
+## Recommended path
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
-
-    ```bash
-    npm install your-package
-    ```
+  <Step title="Start with Auth">
+    Open **Auth** first if you need user login, app login, session handling, or credentials before doing anything else.
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
 
-    ```bash
-    your-cli init
-    ```
+  <Step title="Move to CRS for core setup">
+    Open **CRS** when you are preparing inventory, pricing, policies, taxes, or reservations.
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
 
-    ```bash
-    your-cli start
-    ```
+  <Step title="Use Bridge for partner-facing flows">
+    Open **Bridge** when you are handling callbacks, HotelRunner-style APIs, or custom partner formats.
+  </Step>
+
+  <Step title="Use Developer for implementation details">
+    Open **Developer** when you need credentials, integration setup, and API usage examples for technical teams.
+  </Step>
+
+  <Step title="Switch to API reference when you need exact contracts">
+    Use the generated API docs when you need the full request and response contract beyond the examples in these guides.
   </Step>
 </Steps>
 
-<Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
+## Product entry points
 
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
-</Tip>
+<Card title="Auth" icon="shield-check" href="/auth">
+  Start here for login, app credentials, and session examples.
+</Card>
+<Card title="CRS" icon="building-2" href="/crs">
+  Continue here for room, pricing, inventory, and reservation workflows.
+</Card>
+<Card title="Bridge" icon="plug" href="/bridge">
+  Use this area for callback handling and partner-facing adapter APIs.
+</Card>
+<Card title="Developer" icon="code-2" href="/developer">
+  Use this area for credentials, integrations, and technical onboarding.
+</Card>
+
+## When to use the workflow guides
+
+- when you want business context
+- when you want a recommended order of operations
+- when you want customer-friendly examples before reading raw API schemas
+
+## When to use the API reference
+
+- when you need the full contract for implementation
+- when you need to inspect optional fields and exact response types
+- when you are validating a request or building an integration
+
+## API entry points
+
+- backend API reference is available through `/docs` and `/doc`
+- bridge API reference is available through `/docs` and `/doc`
+
+<Info>
+  Use the workflow pages first, then switch to the API reference when you need exact field-level detail.
+</Info>

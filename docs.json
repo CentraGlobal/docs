@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Centra Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0F172A",
+    "light": "#334155",
+    "dark": "#020617"
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -16,22 +16,65 @@
           "index",
           "quickstart"
         ]
+      },
+      {
+        "group": "Auth",
+        "pages": [
+          "auth/index",
+          "auth/login",
+          "auth/apps"
+        ]
+      },
+      {
+        "group": "CRS",
+        "pages": [
+          "crs/index",
+          "crs/room-types",
+          "crs/cancellation-policies",
+          "crs/taxes",
+          "crs/rate-plans",
+          "crs/availability",
+          "crs/rates",
+          "crs/reservations"
+        ]
+      },
+      {
+        "group": "Bridge",
+        "pages": [
+          "bridge/index",
+          "bridge/reservation-callbacks",
+          "bridge/pms-confirm-delivery",
+          "bridge/hotelrunner-adapter-apis",
+          "bridge/custom-adapter-apis"
+        ]
+      },
+      {
+        "group": "Developer",
+        "pages": [
+          "developer/index",
+          "developer/bridge-credentials",
+          "developer/integrations"
+        ]
+      },
+      {
+        "group": "PMS",
+        "pages": [
+          "pms/index"
+        ]
+      },
+      {
+        "group": "OBE",
+        "pages": [
+          "obe/index"
+        ]
+      },
+      {
+        "group": "CRM",
+        "pages": [
+          "crm/index"
+        ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -40,14 +83,26 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Overview",
+        "href": "/"
+      },
+      {
+        "label": "Auth",
+        "href": "/auth"
+      },
+      {
+        "label": "CRS",
+        "href": "/crs"
+      },
+      {
+        "label": "Bridge",
+        "href": "/bridge"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "label": "Developer docs",
+      "href": "/developer"
     }
   },
   "contextual": {
@@ -61,12 +116,5 @@
       "cursor",
       "vscode"
     ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
-    }
   }
 }

@@ -1,0 +1,102 @@
+---
+title: "Create taxes"
+description: "Configure taxes used in pricing and reservations."
+---
+
+Use taxes to make sure quoted and confirmed totals reflect the right commercial and fiscal setup.
+
+## API support
+
+Tax routes include:
+
+- `GET /taxes`
+- `GET /taxes/{id}`
+- `POST /taxes`
+- `PUT /taxes/{id}`
+- `DELETE /taxes/{id}`
+
+Permissions:
+
+- `taxes.read`
+- `taxes.write`
+- `taxes.delete`
+
+## What you can configure
+
+- tax type
+- percentage or fixed amount
+- scope of application
+- how taxes appear in pricing and reservation totals
+
+## Important tax rules
+
+- percentage taxes must use a stay-level charging model
+- percentage taxes can only charge by booking or room
+- `appliesToKids` only applies when the tax is charged per person
+
+## Workflow
+
+<Steps>
+  <Step title="Choose the tax type">
+    Decide whether the tax is percentage-based or fixed.
+  </Step>
+
+  <Step title="Set charge behavior">
+    Choose whether the tax applies per stay or per night, and whether it applies by booking, room, or person.
+  </Step>
+
+  <Step title="Set the tax value">
+    Define the commercial value that should be applied when totals are calculated.
+  </Step>
+
+  <Step title="Confirm how the tax is displayed">
+    Make sure your team understands whether the tax is included in price or added separately.
+  </Step>
+</Steps>
+
+## Recommended API use
+
+- use `POST /taxes` for new tax rules
+- use `PUT /taxes/{id}` when tax setup changes
+- use `GET /taxes` to review active tax configuration
+
+## Example create request
+
+`POST /taxes`
+
+```json
+{
+  "name": "City Tax",
+  "type": "fixed",
+  "chargePeriod": "night",
+  "chargeUnit": "person",
+  "value": 25,
+  "appliesToKids": false,
+  "includedInPrice": false,
+  "isActive": true
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Tax created",
+  "data": {
+    "id": "tax_123",
+    "orgId": "ORG-2321",
+    "hotelId": "HT-2321",
+    "name": "City Tax",
+    "type": "fixed",
+    "chargePeriod": "night",
+    "chargeUnit": "person",
+    "value": "25",
+    "appliesToKids": false,
+    "includedInPrice": false,
+    "isActive": true,
+    "createdBy": "usr_123",
+    "createdAt": "2026-06-02T10:00:00.000Z"
+  }
+}
+```

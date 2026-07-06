@@ -1,0 +1,120 @@
+---
+title: "Create cancellation policies"
+description: "Set the cancellation rules that apply to bookings."
+---
+
+Use cancellation policies to control refundability, penalties, and prepayment behavior.
+
+## API support
+
+Cancellation policy routes include:
+
+- `GET /cancellation-policies`
+- `GET /cancellation-policies/{id}`
+- `POST /cancellation-policies`
+- `PUT /cancellation-policies/{id}`
+- `DELETE /cancellation-policies/{id}`
+
+Permissions:
+
+- `cancellation_policies.read`
+- `cancellation_policies.write`
+- `cancellation_policies.delete`
+
+## What you can configure
+
+- policy names and descriptions
+- cancellation windows
+- penalties or fees
+- links between policies and rate plans
+
+## Important policy rules
+
+- non-refundable policies cannot also require prepayment rules
+- non-refundable policies cannot carry cancellation rules
+- if prepayment is required, both prepayment type and prepayment value must be provided
+
+## Workflow
+
+<Steps>
+  <Step title="Choose the refund model">
+    Decide whether the policy is refundable or non-refundable.
+  </Step>
+
+  <Step title="Set prepayment behavior">
+    If prepayment is required, choose the type and value that apply.
+  </Step>
+
+  <Step title="Add cancellation rules">
+    For refundable policies, define the cancellation windows and penalties that apply before arrival.
+  </Step>
+
+  <Step title="Attach the policy to rate plans">
+    Assign the policy where it should control booking behavior.
+  </Step>
+</Steps>
+
+## Recommended API use
+
+- use `POST /cancellation-policies` to create a new policy
+- use `PUT /cancellation-policies/{id}` when changing rules or prepayment setup
+- use `GET /cancellation-policies` to review what is already active
+
+## Example create request
+
+`POST /cancellation-policies`
+
+```json
+{
+  "name": "Flexible 48 Hours",
+  "nonRefundable": false,
+  "prepaymentRequired": false,
+  "isActive": true,
+  "rules": [
+    {
+      "offsetUnit": "days",
+      "offsetValue": 2,
+      "penaltyType": "percentage",
+      "penaltyValue": 100,
+      "noShow": false,
+      "noShowTransactionCodeId": null
+    }
+  ]
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Cancellation policy created successfully",
+  "data": {
+    "id": "cp_123",
+    "orgId": "ORG-2321",
+    "hotelId": "HT-2321",
+    "name": "Flexible 48 Hours",
+    "nonRefundable": false,
+    "prepaymentRequired": false,
+    "prepaymentType": null,
+    "prepaymentValue": null,
+    "createdByPrincipalType": "user",
+    "isActive": true,
+    "rules": [
+      {
+        "id": "cpr_123",
+        "policyId": "cp_123",
+        "offsetUnit": "days",
+        "offsetValue": 2,
+        "penaltyType": "percentage",
+        "penaltyValue": "100",
+        "noShow": false,
+        "noShowTransactionCodeId": null,
+        "createdAt": "2026-06-02T10:00:00.000Z"
+      }
+    ],
+    "createdBy": "usr_123",
+    "createdAt": "2026-06-02T10:00:00.000Z"
+  }
+}
+```

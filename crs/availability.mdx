@@ -1,0 +1,99 @@
+---
+title: "Load availability"
+description: "Open or restrict inventory availability in CRS."
+---
+
+Use availability updates to control whether room inventory is open for sale on specific dates.
+
+## API support
+
+Availability can be managed through dedicated availability routes or the ARI orchestrator:
+
+- `GET /availability`
+- `POST /availability`
+- `POST /availability/bulk`
+- `POST /availability/stop-sell`
+- `DELETE /availability/{roomTypeId}/{date}`
+- `GET /ari/by-date-range`
+- `POST /ari/bulk-update`
+- `POST /ari/inline-bulk`
+- `POST /ari/bulk-update-advanced`
+- `POST /ari/full-sync`
+
+Permissions commonly involved:
+
+- `availability.read`
+- `availability.write`
+- `availability.delete`
+- `pricing.write`
+- `restrictions.write`
+
+## What you control
+
+- date ranges
+- room type or rate plan scope
+- open and close behavior
+- restrictions that affect sellability
+
+## Workflow
+
+<Steps>
+  <Step title="Choose the room type and dates">
+    Select the inventory you want to open or change and the date range you want the update to affect.
+  </Step>
+
+  <Step title="Set available units">
+    Define the available base units and any overbooking behavior your operation allows.
+  </Step>
+
+  <Step title="Apply stop-sell when needed">
+    Use stop-sell when inventory should remain configured but not be sellable.
+  </Step>
+
+  <Step title="Validate the result in ARI views">
+    Confirm the update using a range read or the ARI composition view before publishing downstream.
+  </Step>
+</Steps>
+
+## Which route to use
+
+- use `POST /availability` for single-date updates
+- use `POST /availability/bulk` for direct range updates
+- use `POST /availability/stop-sell` for operational stop-sell behavior
+- use `POST /ari/bulk-update` when availability changes are part of a broader ARI workflow
+
+## Important validation notes
+
+- dates must be valid and range-based updates must keep `startDate <= endDate`
+- inventory values must be zero or higher
+
+## Example bulk request
+
+`POST /availability/bulk`
+
+```json
+{
+  "roomTypeId": "rt_123",
+  "startDate": "2026-07-01",
+  "endDate": "2026-07-31",
+  "baseUnits": 10,
+  "metadata": {}
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Availability updated successfully",
+  "data": {
+    "count": 31,
+    "dates": [
+      "2026-07-01",
+      "2026-07-02",
+      "2026-07-03"
+    ]
+  }
+}
+```

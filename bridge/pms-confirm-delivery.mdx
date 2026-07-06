@@ -1,0 +1,102 @@
+---
+title: "PMS confirm delivery"
+description: "Public PMS-facing endpoint for confirming reservation delivery by provider lookup."
+---
+
+Use this endpoint when your PMS needs to confirm that it received a reservation from Centra without requiring any change to the outbound reservation payload shape.
+
+## Endpoint
+
+`POST /v1/pms/reservations/confirm-delivery`
+
+## Authentication
+
+Use Bridge credential query parameters:
+
+- `hotel_id` or `hr_id`
+- `token`
+
+Example:
+
+```http
+POST /v1/pms/reservations/confirm-delivery?hotel_id=HT-2321&token=bridge-token
+Content-Type: application/json
+```
+
+## Request body
+
+```json
+{
+  "channel_provider": "centra_x",
+  "lookup_type": "message_uid",
+  "lookup_id": "TG-E2E-1780576826",
+  "pms_number": "PMS-3425"
+}
+```
+
+### Fields
+
+- `channel_provider`: `centra_channels`, `hotelrunner`, `custom`, or `centra_x`
+- `lookup_type`: provider-specific identifier type
+- `lookup_id`: identifier value already present in the outbound reservation delivery
+- `pms_number`: optional reservation number created in your PMS
+
+## Supported lookup types
+
+| Provider | Lookup types |
+| --- | --- |
+| `centra_channels` | `booking_id` |
+| `hotelrunner` | `message_uid`, `hr_number`, `provider_number` |
+| `custom` | `message_uid`, `reservation_code` |
+| `centra_x` | `message_uid`, `reservation_code` |
+
+## Example requests
+
+### Centra X by message UID
+
+```http
+POST /v1/pms/reservations/confirm-delivery?hotel_id=HT-2321&token=bridge-token
+Content-Type: application/json
+
+{
+  "channel_provider": "centra_x",
+  "lookup_type": "message_uid",
+  "lookup_id": "TG-E2E-1780576826",
+  "pms_number": "PMS-3425"
+}
+```
+
+### Centra Channels by booking ID
+
+```http
+POST /v1/pms/reservations/confirm-delivery?hotel_id=HT-2321&token=bridge-token
+Content-Type: application/json
+
+{
+  "channel_provider": "centra_channels",
+  "lookup_type": "booking_id",
+  "lookup_id": "BK-123456"
+}
+```
+
+## Success response
+
+```json
+{
+  "status": "ok"
+}
+```
+
+## Error behavior
+
+- `400` for invalid provider, invalid lookup type, or malformed request
+- `401` for invalid `hotel_id`/`token` credentials
+- `404` when no active integration exists for the hotel and provider, or no reservation snapshot matches the lookup
+- `409` when the lookup matches more than one reservation snapshot
+
+## Compatibility notes
+
+- This endpoint is designed to work with existing outbound reservation flows.
+- Your PMS should send back an identifier it already receives today.
+- If multiple snapshots match the same provider and lookup value, Centra rejects the request with `409` instead of guessing.
+- Legacy provider aliases `travelgate` and `channex` are deprecated but still accepted for backward compatibility.

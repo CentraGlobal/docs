@@ -1,0 +1,99 @@
+---
+title: "Load rates"
+description: "Set or update rates for selling inventory."
+---
+
+Use rate loading to apply price updates across room and rate combinations.
+
+## API support
+
+Rates can be managed through dedicated pricing routes or ARI orchestrator routes:
+
+- `GET /pricing/range`
+- `POST /pricing`
+- `POST /pricing/bulk`
+- `DELETE /pricing/{roomTypeId}/{ratePlanId}/{date}`
+- `DELETE /pricing/exclusive/{ratePlanId}/{date}`
+- `POST /ari/bulk-update`
+- `POST /ari/inline-bulk`
+- `POST /ari/bulk-update-advanced`
+- `POST /ari/full-sync`
+
+Permissions commonly involved:
+
+- `pricing.read`
+- `pricing.write`
+- `pricing.delete`
+- `availability.write`
+- `restrictions.write`
+
+## What you control
+
+- applicable dates
+- room type and rate plan selection
+- single or bulk updates
+- validation checks before publish
+
+## Workflow
+
+<Steps>
+  <Step title="Choose the room and rate context">
+    Identify the room type and rate plan that the new price should affect.
+  </Step>
+
+  <Step title="Set the pricing window">
+    Choose whether you are updating a single date or a date range.
+  </Step>
+
+  <Step title="Apply the price value">
+    Enter the correct commercial value for the selected dates.
+  </Step>
+
+  <Step title="Validate the result">
+    Confirm that the expected prices appear in your pricing view or ARI view before relying on the update operationally.
+  </Step>
+</Steps>
+
+## Which route to use
+
+- use `POST /pricing` for single-date upsert behavior
+- use `POST /pricing/bulk` for range pricing updates
+- use ARI routes when pricing is updated together with availability and restrictions
+
+## Important validation notes
+
+- single-date pricing uses a decimal string format
+- bulk pricing uses date ranges and requires `startDate <= endDate`
+- pricing values must be non-negative
+
+## Example bulk request
+
+`POST /pricing/bulk`
+
+```json
+{
+  "roomTypeId": "rt_123",
+  "ratePlanId": "rp_123",
+  "startDate": "2026-07-01",
+  "endDate": "2026-07-31",
+  "price": 1450,
+  "metadata": {}
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Pricing updated successfully",
+  "data": {
+    "count": 31,
+    "dates": [
+      "2026-07-01",
+      "2026-07-02",
+      "2026-07-03"
+    ]
+  }
+}
+```

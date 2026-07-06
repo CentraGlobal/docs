@@ -1,0 +1,289 @@
+---
+title: "Login"
+description: "How users log in to Centra and which backend auth endpoints support the flow."
+---
+
+Use this page when you need to document or implement the user authentication flow for Centra.
+
+## API support
+
+The backend auth module exposes these routes under `/auth`:
+
+- `POST /auth/login`
+- `POST /auth/signup`
+- `POST /auth/forgot-password`
+- `POST /auth/reset-password`
+- `GET /auth/me`
+- `POST /auth/logout`
+- `POST /auth/refresh`
+
+## Login request
+
+`POST /auth/login`
+
+Example request:
+
+```json
+{
+  "username": "user@example.com",
+  "password": "your-password"
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "tokens": {
+      "access_token": "eyJhbGciOi...",
+      "refresh_token": "eyJhbGciOi...",
+      "expires_in": 300,
+      "refresh_expires_in": 1800,
+      "token_type": "Bearer"
+    },
+    "user": {
+      "sub": "usr_123",
+      "email": "user@example.com",
+      "email_verified": true,
+      "preferred_username": "user@example.com",
+      "name": "Jane Doe",
+      "given_name": "Jane",
+      "family_name": "Doe"
+    },
+    "organizations": [],
+    "hotels": [],
+    "invites": []
+  }
+}
+```
+
+The current login schema requires:
+
+- `username` with at least 3 characters
+- `password` with at least 1 character
+
+## What login returns
+
+The login flow delegates to Keycloak, then builds a full session payload that includes:
+
+- issued tokens
+- current user details
+- organizations
+- hotels
+- pending invites
+
+This makes login useful for both authentication and initial workspace bootstrapping.
+
+## Check the active session
+
+Use `GET /auth/me` after login when you want to confirm the active session and inspect the authenticated user's expanded context.
+
+Example request headers:
+
+```http
+Authorization: Bearer eyJhbGciOi...
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "User info retrieved successfully",
+  "data": {
+    "tokenPayload": {
+      "sub": "usr_123",
+      "email": "user@example.com"
+    },
+    "user": {
+      "sub": "usr_123",
+      "email": "user@example.com",
+      "email_verified": true,
+      "preferred_username": "user@example.com",
+      "name": "Jane Doe",
+      "given_name": "Jane",
+      "family_name": "Doe"
+    },
+    "organizations": [],
+    "hotels": [],
+    "invites": []
+  }
+}
+```
+
+This route requires a bearer token and returns:
+
+- token payload
+- normalized user fields
+- organizations
+- hotels
+- invites
+
+## Refresh a session
+
+Use `POST /auth/refresh` with a refresh token when the access token expires.
+
+Example request:
+
+```json
+{
+  "refreshToken": "your-refresh-token"
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Session refreshed successfully",
+  "data": {
+    "tokens": {
+      "access_token": "eyJhbGciOi...",
+      "refresh_token": "eyJhbGciOi...",
+      "expires_in": 300,
+      "refresh_expires_in": 1800,
+      "token_type": "Bearer"
+    },
+    "user": {
+      "sub": "usr_123",
+      "email": "user@example.com"
+    },
+    "organizations": [],
+    "hotels": [],
+    "invites": []
+  }
+}
+```
+
+The refresh flow returns a new token set and a rebuilt session.
+
+## Sign out
+
+Use `POST /auth/logout` with a refresh token.
+
+Example request:
+
+```json
+{
+  "refreshToken": "your-refresh-token"
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Logged out successfully",
+  "data": null
+}
+```
+
+## Password recovery
+
+Use the recovery flow in two steps:
+
+1. `POST /auth/forgot-password`
+2. `POST /auth/reset-password`
+
+Forgot password request:
+
+```json
+{
+  "email": "user@example.com"
+}
+```
+
+Forgot password response:
+
+```json
+{
+  "success": true,
+  "message": "If an account exists for this email, a reset link has been sent.",
+  "data": null
+}
+```
+
+Reset password request:
+
+```json
+{
+  "token": "reset-token",
+  "newPassword": "new-password",
+  "confirmPassword": "new-password"
+}
+```
+
+Reset password response:
+
+```json
+{
+  "success": true,
+  "message": "Password reset successful",
+  "data": null
+}
+```
+
+The reset token is stored hashed, expires after a configurable TTL, and is consumed on successful password reset.
+
+## Signup
+
+User signup is also exposed through auth:
+
+`POST /auth/signup`
+
+Example request:
+
+```json
+{
+  "username": "new-user",
+  "email": "new-user@example.com",
+  "password": "secret123",
+  "firstName": "New",
+  "lastName": "User",
+  "enabled": true
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "User created successfully",
+  "data": {
+    "tokens": {
+      "access_token": "eyJhbGciOi...",
+      "refresh_token": "eyJhbGciOi...",
+      "expires_in": 300,
+      "refresh_expires_in": 1800,
+      "token_type": "Bearer"
+    },
+    "user": {
+      "sub": "usr_456",
+      "email": "new-user@example.com"
+    },
+    "organizations": [],
+    "hotels": [],
+    "invites": []
+  }
+}
+```
+
+By default, signup auto-logs the user in unless the service is called with `autoLogin: false` internally.
+
+## Recommended documentation focus
+
+- where users authenticate
+- what data the session returns after login
+- how refresh and logout work
+- how password recovery works end to end
+- common authentication failure states
+
+<Tip>
+  Add screenshots, response examples, and frontend-specific error guidance once the final UI flow is ready.
+</Tip>

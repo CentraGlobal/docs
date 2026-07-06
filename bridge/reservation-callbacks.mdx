@@ -1,0 +1,109 @@
+---
+title: "Reservation callbacks"
+description: "Reservation callback formats for HotelRunner and custom integrations."
+---
+
+Use this page to explain how Centra receives reservation callbacks.
+
+## API support
+
+HotelRunner reservation delivery and callback support includes:
+
+- `POST /reservations/push`
+- `POST /v1/pms/reservations/confirm-delivery`
+- `GET /v2/apps/reservations`
+- `PUT /v2/apps/reservations`
+- `PUT /v2/apps/reservations/~`
+- `PUT /v2/apps/reservations/fire`
+- `POST /callback/{hotel_id}`
+
+Custom channel support includes:
+
+- `POST /reservations/confirm`
+- `POST /reservations/push/{token}/{hotel_id}`
+- `POST /v1/pms/reservations/confirm-delivery`
+
+Internal backend support includes:
+
+- `POST /bridge-api/reservations/callback`
+- `POST /bridge-api/reservations/confirm-delivery`
+- `POST /bridge-api/reservations/failed-callback-log`
+
+## HotelRunner callbacks
+
+HotelRunner callbacks are typically sent to `POST /callback/{hotel_id}` as form data with the reservation payload in the `data` field.
+
+Example request:
+
+```http
+POST /callback/HT-2321?channel=hotelrunner
+Content-Type: application/x-www-form-urlencoded
+
+data={"reason":"confirm","hr_number":"R675877300","state":"confirmed","guest":"Sami Rodus","currency":"MAD","checkin_date":"2025-12-17","checkout_date":"2025-12-23","total":1200.0,"message_uid":"dfd8f7c081ad10b295bddd35de3a6336"}
+```
+
+Example success response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+For XML reservation delivery, HotelRunner-compatible partners can also send:
+
+`POST /reservations/push`
+
+Example XML request:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<reservation>
+  <status>Confirm</status>
+  <code>RES-12345</code>
+  <name><![CDATA[John Doe]]></name>
+  <mail>john.doe@example.com</mail>
+  <arrival_date>2024-02-01</arrival_date>
+  <departure_date>2024-02-03</departure_date>
+  <total_cost>300.00</total_cost>
+  <currency>EUR</currency>
+</reservation>
+```
+
+Example XML response:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>0</status>
+  <message>success</message>
+</response>
+```
+
+## Custom formats
+
+Custom partners can use `POST /reservations/push/{token}/{hotel_id}` when the integration relies on token-in-path authentication.
+
+Example request:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<reservation>
+  <code>CUSTOM-7788</code>
+  <name><![CDATA[Jane Doe]]></name>
+  <arrival_date>2026-07-10</arrival_date>
+  <departure_date>2026-07-12</departure_date>
+  <total_cost>2350.00</total_cost>
+  <currency>MAD</currency>
+</reservation>
+```
+
+Example response:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <status>0</status>
+  <message>success</message>
+</response>
+```

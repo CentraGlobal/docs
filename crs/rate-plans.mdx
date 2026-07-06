@@ -1,0 +1,142 @@
+---
+title: "Create rate plans"
+description: "Build rate plans for pricing and selling inventory."
+---
+
+Use rate plans to define how inventory is sold.
+
+Rate plans bring together pricing behavior, room bindings, cancellation logic, taxes, and commercial visibility.
+
+## API support
+
+Rate plan support is split across standard and composition flows:
+
+- `GET /rateplans`
+- `GET /rateplans/{id}`
+- `DELETE /rateplans/{id}`
+- `POST /rateplans/compose`
+- `PUT /rateplans/{id}/compose`
+- `GET /rateplans/{id}/compose`
+
+Permissions:
+
+- `rateplans.read`
+- `rateplans.write`
+- `rateplans.delete`
+
+## Standard vs composed setup
+
+Centra supports a composition flow for richer rate plan setup.
+
+Use the composition endpoints when you want to configure:
+
+- room type bindings
+- inheritance behavior
+- tax inheritance
+- cancellation policy inheritance
+- inventory group setup
+- pricing rule collections
+
+## What you define in a rate plan
+
+- base rules
+- linked room types
+- linked cancellation policies
+- pricing model
+- restrictions and sell rules
+
+## Workflow
+
+<Steps>
+  <Step title="Choose the rate plan type">
+    Decide whether the plan is base or derived.
+  </Step>
+
+  <Step title="Set the commercial setup">
+    Define base price, board, currency, visibility, and operational flags.
+  </Step>
+
+  <Step title="Attach inventory and policy behavior">
+    Link room types, cancellation policy behavior, and taxes.
+  </Step>
+
+  <Step title="Apply pricing rules if needed">
+    Add pricing rules or derived pricing behavior where the plan should adjust automatically.
+  </Step>
+</Steps>
+
+## Important validation notes
+
+- base rate plans cannot declare derived pricing fields
+- derived rate plans must include a parent rate plan and derived pricing configuration
+- percentage adjustments must not exceed 100
+- rounding rules only apply when the rounding mode requires them
+
+## Recommended API use
+
+- use `POST /rateplans/compose` for creation through the full composition flow
+- use `PUT /rateplans/{id}/compose` when maintaining a fully configured rate plan
+- use `GET /rateplans/{id}/compose` to preload the editable composition payload
+
+## Example create request
+
+`POST /rateplans/compose`
+
+```json
+{
+  "ratePlan": {
+    "name": "Flexible Rate",
+    "type": "base",
+    "basePrice": 1200,
+    "baseOccupancy": 2,
+    "status": "active",
+    "showInObe": true,
+    "inventoryMode": "standard",
+    "board": "breakfast",
+    "currency": "MAD",
+    "cancellationPolicyId": "cp_123"
+  },
+  "roomTypeBindings": [
+    {
+      "roomTypeId": "rt_123",
+      "baseOccupancy": 2
+    }
+  ],
+  "taxIds": ["tax_123"],
+  "pricingRules": []
+}
+```
+
+Example response:
+
+```json
+{
+  "success": true,
+  "message": "Rate plan created successfully",
+  "data": {
+    "id": "rp_123",
+    "hotelId": "HT-2321",
+    "orgId": "ORG-2321",
+    "name": "Flexible Rate",
+    "type": "base",
+    "basePrice": 1200,
+    "baseOccupancy": 2,
+    "chargeType": null,
+    "adjustmentType": null,
+    "pricingType": null,
+    "value": null,
+    "childValue": null,
+    "rateCode": null,
+    "description": null,
+    "imageUrl": null,
+    "status": "active",
+    "showInObe": true,
+    "isPostingMaster": false,
+    "inventoryMode": "standard",
+    "board": "breakfast",
+    "currency": "MAD",
+    "parentRatePlanId": null,
+    "cancellationPolicyId": "cp_123"
+  }
+}
+```
